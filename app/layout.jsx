@@ -1,6 +1,6 @@
 import "./globals.css";
-import Nav from "./api/hello/auth/Nav";
-import { Roboto } from "@next/font/google";
+import Nav from "./auth/Nav";
+import { Roboto } from "next/font/google";
 
 const roboto = Roboto({
   subsets: ["latin"],
