@@ -17,7 +17,7 @@ export default function Home() {
   });
   if (error) return error;
   if (isLoading) return "Loading...";
-  console.log("hello"); //currently breaking on the line before this.
+  console.log("hello"); //currently breaking on the return error line above this
   console.log(data);
 
   return (
@@ -25,7 +25,7 @@ export default function Home() {
       <AddPost />
       {data?.map((post) => (
         <Post
-          key={post.id}
+          key={post.id} // Why can i have this parameters but not have it defined in Post.tsx???
           id={post.id}
           name={post.user.name}
           avatar={post.user.image}

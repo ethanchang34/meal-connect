@@ -12,11 +12,11 @@ export default async function handler(
         include: {
           user: true,
         },
-        oroderBy: {
+        orderBy: {
           createdAt: "desc",
         },
       });
-      res.status(200).json(data);
+      return res.status(200).json(data);
     } catch (err) {
       res.status(403).json({ err: "Error fetching post" });
     }
