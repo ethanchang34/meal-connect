@@ -12,10 +12,10 @@ export default async function Nav() {
       <Link href={"/"}>
         <h1 className="font-bold text-lg">Home</h1>
       </Link>
-      <Link href={"/Give"}>
+      <Link href={"/give"}>
         <h1 className="font-bold text-lg">Give</h1>
       </Link>
-      <Link href={"/Request"}>
+      <Link href={"/request"}>
         <h1 className="font-bold text-lg">Request</h1>
       </Link>
       <ul className="flex items-center gap-6">
