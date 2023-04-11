@@ -3,22 +3,22 @@ import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
-export default async function Give() {
+export default async function Request() {
   const session = await getServerSession(authOptions);
   if (!session) {
     redirect("/api/auth/signin");
   }
   return (
     <main>
-      <h1 className="text-2xl font-bold">Give</h1>
+      <h1 className="text-2xl font-bold">Request</h1>
       <Link
-        href="/give/guest-pass"
+        href="/request/guest-pass"
         className="bg-gray-700 text-white text-sm px-6 py-2 rounded-md"
       >
         Guest Pass
       </Link>
       <Link
-        href="/give/meal-exchange"
+        href="/request/meal-exchange"
         className="bg-gray-700 text-white text-sm px-6 py-2 rounded-md"
       >
         Meal Exchange
