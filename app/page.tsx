@@ -19,7 +19,6 @@ export default function Home() {
   });
   if (error) return error;
   if (isLoading) return "Loading...";
-  console.log(data);
 
   return (
     <main>
@@ -32,7 +31,7 @@ export default function Home() {
           title: any;
         }) => (
           <Post
-            key={post.id} // Why can i have this parameters but not have it defined in Post.tsx???
+            key={post.id}
             id={post.id}
             name={post.user.name}
             avatar={post.user.image}
