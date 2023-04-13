@@ -1,5 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 export default function Form() {
   const [checkedAll, setCheckedAll] = useState(false);
@@ -8,21 +11,23 @@ export default function Form() {
     pencader: false,
     russell: false,
   });
+  let toastPostID: string;
 
-  const toggleCheck = (inputName) => {
+  const toggleCheck = (inputName: string) => {
     setChecked((prevState) => {
       const newState = { ...prevState };
-      newState[inputName] = !prevState[inputName];
+      newState[inputName as keyof typeof prevState] =
+        !prevState[inputName as keyof typeof prevState];
       return newState;
     });
   };
 
-  const selectAll = (value) => {
+  const selectAll = (value: boolean) => {
     setCheckedAll(value);
     setChecked((prevState) => {
       const newState = { ...prevState };
       for (const inputName in newState) {
-        newState[inputName] = value;
+        newState[inputName as keyof typeof prevState] = value;
       }
       return newState;
     });
@@ -31,7 +36,7 @@ export default function Form() {
   useEffect(() => {
     let allChecked = true;
     for (const inputName in checked) {
-      if (checked[inputName] === false) {
+      if (checked[inputName as keyof typeof checked] === false) {
         allChecked = false;
       }
     }
@@ -41,6 +46,35 @@ export default function Form() {
       setCheckedAll(false);
     }
   }, [checked]);
+
+  //Submit Form
+  const { mutate } = useMutation(
+    async (checked: {
+      caesar_rodney: boolean;
+      pencader: boolean;
+      russell: boolean;
+    }) => await axios.post("/api/posts/submitForm", { checked }),
+    {
+      onError: (error) => {
+        if (error instanceof AxiosError) {
+          toast.error(error?.response?.data.message, { id: toastPostID }); //Pop-up error msg
+        }
+        // setIsDisabled(false);
+      },
+      onSuccess: (data) => {
+        toast.success("Form has been submitted!", { id: toastPostID });
+        // setTitle("");
+        // setIsDisabled(false);
+      },
+    }
+  );
+
+  const submitForm = async (e: React.FormEvent) => {
+    e.preventDefault(); //prevents refreshing onSubmit
+    toastPostID = toast.loading("Submitting your form", { id: toastPostID });
+    // setIsDisabled(true);
+    mutate(checked);
+  };
 
   return (
     <form className="bg-white my-8 p-8 rounded-md">
