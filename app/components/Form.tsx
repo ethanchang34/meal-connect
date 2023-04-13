@@ -57,11 +57,14 @@ export default function Form() {
 
   //Submit Form
   const { mutate } = useMutation(
-    async (checked: {
-      caesar_rodney: boolean;
-      pencader: boolean;
-      russell: boolean;
-    }) => await axios.post("/api/posts/submitForm", { checked }),
+    async ([checked, time]: [
+      {
+        caesar_rodney: boolean;
+        pencader: boolean;
+        russell: boolean;
+      },
+      { start: string; end: string }
+    ]) => await axios.post("/api/posts/submitForm", { checked, time }),
     {
       onError: (error) => {
         if (error instanceof AxiosError) {
@@ -80,7 +83,7 @@ export default function Form() {
     e.preventDefault(); //prevents refreshing onSubmit
     toastPostID = toast.loading("Submitting your form", { id: toastPostID }); // For some reason, this doesn't go away
     // setIsDisabled(true);
-    mutate(checked);
+    mutate([checked, time]);
   };
 
   return (

@@ -20,6 +20,7 @@ export default async function submitForm(
     });
 
     const locations = req.body.checked;
+    const times = req.body.time;
     //Check title
     // if (title.length > 300) {
     //   return res.status(403).json({ message: "Please write a shorter post" });
@@ -37,6 +38,8 @@ export default async function submitForm(
           caesar_rodney: locations["caesar_rodney"],
           pencader: locations["pencader"],
           russell: locations["russell"],
+          start: times["start"],
+          end: times["end"],
           userId: prismaUser.id,
         },
       });
