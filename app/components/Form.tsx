@@ -22,6 +22,7 @@ export default function Form() {
     });
   };
 
+  // Check or uncheck all when selecting "select all"
   const selectAll = (value: boolean) => {
     setCheckedAll(value);
     setChecked((prevState) => {
@@ -33,6 +34,9 @@ export default function Form() {
     });
   };
 
+  // Effect to control checkedAll state
+  // If you check both individually, it will activate the checkedAll state
+  // If you uncheck any individaully, it will deactivate the checkedAll state
   useEffect(() => {
     let allChecked = true;
     for (const inputName in checked) {
@@ -68,7 +72,6 @@ export default function Form() {
       },
     }
   );
-
   const submitForm = async (e: React.FormEvent) => {
     e.preventDefault(); //prevents refreshing onSubmit
     toastPostID = toast.loading("Submitting your form", { id: toastPostID });
@@ -77,7 +80,7 @@ export default function Form() {
   };
 
   return (
-    <form className="bg-white my-8 p-8 rounded-md">
+    <form onSubmit={submitForm} className="bg-white my-8 p-8 rounded-md">
       <label className="text-xl font-bold">Choose a location</label>
       <div className="mb-1">
         <input
@@ -119,6 +122,13 @@ export default function Form() {
         />
         <label> All of the above</label>
       </div>
+      <button
+        //   disabled={isDisabled}
+        className="text-sm bg-teal-600 text-white py-2 px-6 rounded-xl disabled:opacity-25"
+        type="submit"
+      >
+        Submit
+      </button>
     </form>
   );
 }

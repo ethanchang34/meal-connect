@@ -30,7 +30,7 @@ export default async function submitForm(
     //     .json({ message: "Please do not leave this empty" });
     // }
 
-    //Create Post
+    //Submit Form
     try {
       const result = await prisma.form.create({
         data: {
