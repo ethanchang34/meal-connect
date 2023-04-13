@@ -11,6 +11,10 @@ export default function Form() {
     pencader: false,
     russell: false,
   });
+  const [time, setTime] = useState({
+    start: "",
+    end: "",
+  });
   let toastPostID: string;
 
   const toggleCheck = (inputName: string) => {
@@ -74,7 +78,7 @@ export default function Form() {
   );
   const submitForm = async (e: React.FormEvent) => {
     e.preventDefault(); //prevents refreshing onSubmit
-    toastPostID = toast.loading("Submitting your form", { id: toastPostID });
+    toastPostID = toast.loading("Submitting your form", { id: toastPostID }); // For some reason, this doesn't go away
     // setIsDisabled(true);
     mutate(checked);
   };
@@ -112,7 +116,7 @@ export default function Form() {
         />
         <label> Russell</label>
       </div>
-      <div className="mb-1">
+      <div className="mb-4">
         <input
           id="select_all"
           type="checkbox"
@@ -122,9 +126,34 @@ export default function Form() {
         />
         <label> All of the above</label>
       </div>
+      <label className="text-xl font-bold">Meetup time</label>
+      <div className="mt-1 mb-4">
+        <input
+          className="py-1 px-1 mr-4 rounded border-solid bg-gray-300"
+          type="time"
+          id="start_time"
+          name="time"
+          onChange={(event) => {
+            const newTime = { ...time };
+            newTime["start"] = event.target.value;
+            setTime(newTime);
+          }}
+        />
+        <input
+          className="py-1 px-1 rounded border-solid bg-gray-300"
+          type="time"
+          id="end_time"
+          name="time"
+          onChange={(event) => {
+            const newTime = { ...time };
+            newTime["end"] = event.target.value;
+            setTime(newTime);
+          }}
+        ></input>
+      </div>
       <button
         //   disabled={isDisabled}
-        className="text-sm bg-teal-600 text-white py-2 px-6 rounded-xl disabled:opacity-25"
+        className="text-sm bg-teal-600 text-white py-2 px-4 rounded disabled:opacity-25"
         type="submit"
       >
         Submit
