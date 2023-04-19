@@ -42,6 +42,7 @@ export default function Home() {
   };
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("onChangeHandler called");
     setInput(e.target.value);
     socket.emit("input-change", e.target.value);
   };

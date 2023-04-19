@@ -14,6 +14,7 @@ export default function SocketHandler(req, res) {
 
   io.on("connection", (socket) => {
     socket.on("input-change", (msg) => {
+      console.log("in server:", msg);
       socket.broadcast.emit("update-input", msg);
     });
   });
