@@ -3,8 +3,11 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import AddPost from "./components/AddPost";
 import Post from "./components/Post";
-import { Key } from "react";
+import { Key, useEffect, useState } from "react";
 import { PostType } from "./types/Posts";
+import { io } from "socket.io-client";
+// import { socket } from "./socket";
+let socket;
 
 //Fetch all Posts
 const allPosts = async () => {
@@ -17,6 +20,41 @@ export default function Home() {
     queryFn: allPosts,
     queryKey: ["posts"],
   });
+
+  useEffect(() => {
+    socketInitializer();
+  }, []);
+
+  const socketInitializer = async () => {
+    await fetch("/api/socket");
+    socket = io();
+
+    socket.on("connect", () => {
+      console.log("connected");
+    });
+  };
+
+  // const [isConnected, setIsConnected] = useState<Boolean>(socket.connected);
+  // useEffect(() => {
+  //   function onConnect() {
+  //     setIsConnected(true);
+  //     console.log("connnected :D");
+  //   }
+
+  //   function onDisconnect() {
+  //     setIsConnected(false);
+  //     console.log("disconnected D:");
+  //   }
+
+  //   socket.on("connect", onConnect);
+  //   socket.on("disconnect", onDisconnect);
+
+  //   return () => {
+  //     socket.off("connect", onConnect);
+  //     socket.off("disconnect", onDisconnect);
+  //   };
+  // }, []);
+
   if (error) return error;
   if (isLoading) return "Loading...";
 
@@ -40,6 +78,9 @@ export default function Home() {
           />
         )
       )}
+      {/* <button onClick={socket.connect}>Connect</button>
+      <button onClick={socket.disconnect}>Disconnect</button>
+      <p>isConnected: {isConnected.toString()}</p> */}
     </main>
   );
 }

@@ -5,6 +5,7 @@ import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
 
 export default function Form() {
+  const [isDisabled, setIsDisabled] = useState(false);
   const [checkedAll, setCheckedAll] = useState(false);
   const [checked, setChecked] = useState({
     caesar_rodney: false,
@@ -70,19 +71,19 @@ export default function Form() {
         if (error instanceof AxiosError) {
           toast.error(error?.response?.data.message, { id: toastPostID }); //Pop-up error msg
         }
-        // setIsDisabled(false);
+        setIsDisabled(false);
       },
       onSuccess: (data) => {
         toast.success("Form has been submitted!", { id: toastPostID });
-        // setTitle("");
-        // setIsDisabled(false);
+        setCheckedAll(false);
+        setIsDisabled(false);
       },
     }
   );
   const submitForm = async (e: React.FormEvent) => {
     e.preventDefault(); //prevents refreshing onSubmit
     toastPostID = toast.loading("Submitting your form", { id: toastPostID }); // For some reason, this doesn't go away
-    // setIsDisabled(true);
+    setIsDisabled(true);
     mutate([checked, time]);
   };
 
