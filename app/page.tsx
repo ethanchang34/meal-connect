@@ -46,27 +46,6 @@ export default function Home() {
     socket.emit("input-change", e.target.value);
   };
 
-  // const [isConnected, setIsConnected] = useState<Boolean>(socket.connected);
-  // useEffect(() => {
-  //   function onConnect() {
-  //     setIsConnected(true);
-  //     console.log("connnected :D");
-  //   }
-
-  //   function onDisconnect() {
-  //     setIsConnected(false);
-  //     console.log("disconnected D:");
-  //   }
-
-  //   socket.on("connect", onConnect);
-  //   socket.on("disconnect", onDisconnect);
-
-  //   return () => {
-  //     socket.off("connect", onConnect);
-  //     socket.off("disconnect", onDisconnect);
-  //   };
-  // }, []);
-
   if (error) return error;
   if (isLoading) return "Loading...";
 
@@ -90,9 +69,6 @@ export default function Home() {
           />
         )
       )}
-      {/* <button onClick={socket.connect}>Connect</button>
-      <button onClick={socket.disconnect}>Disconnect</button>
-      <p>isConnected: {isConnected.toString()}</p> */}
       <input
         placeholder="Type something"
         value={input}

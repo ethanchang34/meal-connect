@@ -18,13 +18,6 @@ export default function SocketHandler(req, res) {
     });
   });
 
-  // const onConnection = (socket) => {
-  //   messageHandler(io, socket);
-  // };
-
-  // // Define actions inside
-  // io.on("connection", onConnection);
-
   console.log("Setting up socket");
   res.end();
 }
