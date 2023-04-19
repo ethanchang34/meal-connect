@@ -5,9 +5,10 @@ import AddPost from "./components/AddPost";
 import Post from "./components/Post";
 import { Key, useEffect, useState } from "react";
 import { PostType } from "./types/Posts";
-import { io } from "socket.io-client";
+import { Socket, io } from "socket.io-client";
+import { DefaultEventsMap } from "@socket.io/component-emitter";
 // import { socket } from "./socket";
-let socket;
+let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 //Fetch all Posts
 const allPosts = async () => {
@@ -20,6 +21,7 @@ export default function Home() {
     queryFn: allPosts,
     queryKey: ["posts"],
   });
+  const [input, setInput] = useState("");
 
   useEffect(() => {
     socketInitializer();
@@ -32,6 +34,16 @@ export default function Home() {
     socket.on("connect", () => {
       console.log("connected");
     });
+
+    socket.on("update-input", (msg) => {
+      setInput(msg);
+      console.log(msg);
+    });
+  };
+
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+    socket.emit("input-change", e.target.value);
   };
 
   // const [isConnected, setIsConnected] = useState<Boolean>(socket.connected);
@@ -81,6 +93,11 @@ export default function Home() {
       {/* <button onClick={socket.connect}>Connect</button>
       <button onClick={socket.disconnect}>Disconnect</button>
       <p>isConnected: {isConnected.toString()}</p> */}
+      <input
+        placeholder="Type something"
+        value={input}
+        onChange={onChangeHandler}
+      />
     </main>
   );
 }
