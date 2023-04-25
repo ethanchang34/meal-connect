@@ -12,7 +12,7 @@ export default async function GiveGuestPass() {
   return (
     <main>
       <h1 className="text-2xl font-bold">Give Guest Pass</h1>
-      <Form />
+      <Form give={true} />
     </main>
   );
 }

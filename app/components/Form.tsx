@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
 
-export default function Form() {
+export default function Form({ give }: { give: boolean }) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [checkedAll, setCheckedAll] = useState(false);
   const [checked, setChecked] = useState({
@@ -58,14 +58,15 @@ export default function Form() {
 
   //Submit Form
   const { mutate } = useMutation(
-    async ([checked, time]: [
+    async ([give, checked, time]: [
+      { give: boolean },
       {
         caesar_rodney: boolean;
         pencader: boolean;
         russell: boolean;
       },
       { start: string; end: string }
-    ]) => await axios.post("/api/posts/submitForm", { checked, time }),
+    ]) => await axios.post("/api/posts/submitForm", { give, checked, time }),
     {
       onError: (error) => {
         if (error instanceof AxiosError) {
@@ -84,7 +85,7 @@ export default function Form() {
     e.preventDefault(); //prevents refreshing onSubmit
     toastPostID = toast.loading("Submitting your form", { id: toastPostID }); // For some reason, this doesn't go away
     setIsDisabled(true);
-    mutate([checked, time]);
+    mutate([{ give }, checked, time]);
   };
 
   return (
