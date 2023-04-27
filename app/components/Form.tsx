@@ -1,20 +1,13 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
 
-export default function Form({
-  give,
-}: // submit,
-// isSubmitted,
-{
-  give: boolean;
-  // submit: () => void;
-  // isSubmitted: boolean;
-}) {
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [checkedAll, setCheckedAll] = useState(false);
+export default function Form({ give }: { give: boolean }) {
+  const [isDisabled, setIsDisabled] = useState(false); // Use for buttons when form is empty
+  const [checkedAll, setCheckedAll] = useState(false); // Checkbox 'select all'
   const [checked, setChecked] = useState({
     caesar_rodney: false,
     pencader: false,
@@ -24,6 +17,8 @@ export default function Form({
     start: "",
     end: "",
   });
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false); // Component conditonal rendering from Form to Queue
+
   let toastPostID: string;
 
   console.log("giver?", give);
@@ -66,7 +61,7 @@ export default function Form({
     }
   }, [checked]);
 
-  //Submit Form
+  // Submit Form
   const { mutate } = useMutation(
     async ([give, checked, time]: [
       { give: boolean },
@@ -80,7 +75,7 @@ export default function Form({
     {
       onError: (error) => {
         if (error instanceof AxiosError) {
-          toast.error(error?.response?.data.message, { id: toastPostID }); //Pop-up error msg
+          toast.error(error?.response?.data.message, { id: toastPostID }); // Pop-up error msg
         }
         setIsDisabled(false);
       },
@@ -92,93 +87,94 @@ export default function Form({
     }
   );
   const submitForm = async (e: React.FormEvent) => {
-    e.preventDefault(); //prevents refreshing onSubmit
+    e.preventDefault(); // Prevents refreshing onSubmit
     toastPostID = toast.loading("Submitting your form", { id: toastPostID }); // For some reason, this doesn't go away
     setIsDisabled(true);
+    setIsSubmitted(true);
     mutate([{ give }, checked, time]);
   };
 
   return (
-    <form
-      onSubmit={() => {
-        // submit;
-        submitForm;
-      }}
-      className="bg-white my-8 p-8 rounded-md"
-    >
-      <label className="text-xl font-bold">Choose a location</label>
-      <div className="mb-1">
-        <input
-          id="caesar_Rodney"
-          type="checkbox"
-          name="chk"
-          onChange={() => toggleCheck("caesar_rodney")}
-          checked={checked["caesar_rodney"]}
-        />
-        <label> Caesar Rodney</label>
-      </div>
-      <div className="mb-1">
-        <input
-          id="pencader"
-          type="checkbox"
-          name="chk"
-          onChange={() => toggleCheck("pencader")}
-          checked={checked["pencader"]}
-        />
-        <label> Pencader</label>
-      </div>
-      <div className="mb-1">
-        <input
-          id="russell"
-          type="checkbox"
-          name="chk"
-          onChange={() => toggleCheck("russell")}
-          checked={checked["russell"]}
-        />
-        <label> Russell</label>
-      </div>
-      <div className="mb-4">
-        <input
-          id="select_all"
-          type="checkbox"
-          name="chk"
-          onChange={(event) => selectAll(event.target.checked)}
-          checked={checkedAll}
-        />
-        <label> All of the above</label>
-      </div>
-      <label className="text-xl font-bold">Meetup time</label>
-      <div className="mt-1 mb-4">
-        <input
-          className="py-1 px-1 mr-4 rounded border-solid bg-gray-300"
-          type="time"
-          id="start_time"
-          name="time"
-          onChange={(event) => {
-            const newTime = { ...time };
-            newTime["start"] = event.target.value;
-            setTime(newTime);
-          }}
-        />
-        <input
-          className="py-1 px-1 rounded border-solid bg-gray-300"
-          type="time"
-          id="end_time"
-          name="time"
-          onChange={(event) => {
-            const newTime = { ...time };
-            newTime["end"] = event.target.value;
-            setTime(newTime);
-          }}
-        ></input>
-      </div>
-      <button
-        //   disabled={isDisabled}
-        className="text-sm bg-teal-600 text-white py-2 px-4 rounded disabled:opacity-25"
-        type="submit"
-      >
-        Submit
-      </button>
-    </form>
+    <main>
+      {!isSubmitted ? (
+        <form onSubmit={submitForm} className="bg-white my-8 p-8 rounded-md">
+          <label className="text-xl font-bold">Choose a location</label>
+          <div className="mb-1">
+            <input
+              id="caesar_Rodney"
+              type="checkbox"
+              name="chk"
+              onChange={() => toggleCheck("caesar_rodney")}
+              checked={checked["caesar_rodney"]}
+            />
+            <label> Caesar Rodney</label>
+          </div>
+          <div className="mb-1">
+            <input
+              id="pencader"
+              type="checkbox"
+              name="chk"
+              onChange={() => toggleCheck("pencader")}
+              checked={checked["pencader"]}
+            />
+            <label> Pencader</label>
+          </div>
+          <div className="mb-1">
+            <input
+              id="russell"
+              type="checkbox"
+              name="chk"
+              onChange={() => toggleCheck("russell")}
+              checked={checked["russell"]}
+            />
+            <label> Russell</label>
+          </div>
+          <div className="mb-4">
+            <input
+              id="select_all"
+              type="checkbox"
+              name="chk"
+              onChange={(event) => selectAll(event.target.checked)}
+              checked={checkedAll}
+            />
+            <label> All of the above</label>
+          </div>
+          <label className="text-xl font-bold">Meetup time</label>
+          <div className="mt-1 mb-4">
+            <input
+              className="py-1 px-1 mr-4 rounded border-solid bg-gray-300"
+              type="time"
+              id="start_time"
+              name="time"
+              onChange={(event) => {
+                const newTime = { ...time };
+                newTime["start"] = event.target.value;
+                setTime(newTime);
+              }}
+            />
+            <input
+              className="py-1 px-1 rounded border-solid bg-gray-300"
+              type="time"
+              id="end_time"
+              name="time"
+              onChange={(event) => {
+                const newTime = { ...time };
+                newTime["end"] = event.target.value;
+                setTime(newTime);
+              }}
+            ></input>
+          </div>
+          <button
+            //   disabled={isDisabled}
+            className="text-sm bg-teal-600 text-white py-2 px-4 rounded disabled:opacity-25"
+            type="submit"
+          >
+            Submit
+          </button>
+        </form>
+      ) : (
+        "Waiting for match..."
+      )}
+    </main>
   );
 }
