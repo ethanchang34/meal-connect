@@ -4,7 +4,15 @@ import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
 
-export default function Form({ give }: { give: boolean }) {
+export default function Form({
+  give,
+}: // submit,
+// isSubmitted,
+{
+  give: boolean;
+  // submit: () => void;
+  // isSubmitted: boolean;
+}) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [checkedAll, setCheckedAll] = useState(false);
   const [checked, setChecked] = useState({
@@ -17,6 +25,8 @@ export default function Form({ give }: { give: boolean }) {
     end: "",
   });
   let toastPostID: string;
+
+  console.log("giver?", give);
 
   const toggleCheck = (inputName: string) => {
     setChecked((prevState) => {
@@ -89,7 +99,13 @@ export default function Form({ give }: { give: boolean }) {
   };
 
   return (
-    <form onSubmit={submitForm} className="bg-white my-8 p-8 rounded-md">
+    <form
+      onSubmit={() => {
+        // submit;
+        submitForm;
+      }}
+      className="bg-white my-8 p-8 rounded-md"
+    >
       <label className="text-xl font-bold">Choose a location</label>
       <div className="mb-1">
         <input

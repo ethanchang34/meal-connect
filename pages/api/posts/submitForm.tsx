@@ -21,6 +21,7 @@ export default async function submitForm(
     });
 
     // Retrieve data from request
+    const give = req.body.give;
     const locations = req.body.checked;
     const times = req.body.time;
 
@@ -28,6 +29,7 @@ export default async function submitForm(
     try {
       const result = await prisma.form.create({
         data: {
+          give: give,
           caesar_rodney: locations["caesar_rodney"],
           pencader: locations["pencader"],
           russell: locations["russell"],
