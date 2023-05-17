@@ -23,6 +23,7 @@ export default function Form({ give }: { give: boolean }) {
   let toastPostID: string;
 
   console.log("giver?", give);
+  console.log("matched?", matched);
 
   const toggleCheck = (inputName: string) => {
     setChecked((prevState) => {
@@ -176,7 +177,15 @@ export default function Form({ give }: { give: boolean }) {
           </button>
         </form>
       ) : (
-        "Waiting for match..."
+        <main>
+          Waiting for match...
+          <button
+            className="text-sm bg-teal-600 text-white py-2 px-4 rounded disabled:opacity-25"
+            onClick={() => setMatched(true)}
+          >
+            Artificially match
+          </button>
+        </main>
       )}
     </main>
   );
