@@ -18,6 +18,7 @@ export default function Form({ give }: { give: boolean }) {
     end: "",
   });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false); // Component conditonal rendering from Form to Queue
+  const [matched, setMatched] = useState<boolean>(false); // Component conditional rendering from Queue to Live Chat
 
   let toastPostID: string;
 
@@ -74,12 +75,14 @@ export default function Form({ give }: { give: boolean }) {
     ]) => await axios.post("/api/posts/submitForm", { give, checked, time }),
     {
       onError: (error) => {
+        toast.dismiss();
         if (error instanceof AxiosError) {
           toast.error(error?.response?.data.message, { id: toastPostID }); // Pop-up error msg
         }
         setIsDisabled(false);
       },
       onSuccess: (data) => {
+        toast.dismiss();
         toast.success("Form has been submitted!", { id: toastPostID });
         setCheckedAll(false);
         setIsDisabled(false);

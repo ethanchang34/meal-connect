@@ -29,7 +29,7 @@ export default async function submitForm(
     try {
       const result = await prisma.form.create({
         data: {
-          give: give,
+          give: give["give"],
           caesar_rodney: locations["caesar_rodney"],
           pencader: locations["pencader"],
           russell: locations["russell"],
