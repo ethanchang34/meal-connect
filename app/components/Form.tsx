@@ -100,92 +100,96 @@ export default function Form({ give }: { give: boolean }) {
 
   return (
     <main>
-      {!isSubmitted ? (
-        <form onSubmit={submitForm} className="bg-white my-8 p-8 rounded-md">
-          <label className="text-xl font-bold">Choose a location</label>
-          <div className="mb-1">
-            <input
-              id="caesar_Rodney"
-              type="checkbox"
-              name="chk"
-              onChange={() => toggleCheck("caesar_rodney")}
-              checked={checked["caesar_rodney"]}
-            />
-            <label> Caesar Rodney</label>
-          </div>
-          <div className="mb-1">
-            <input
-              id="pencader"
-              type="checkbox"
-              name="chk"
-              onChange={() => toggleCheck("pencader")}
-              checked={checked["pencader"]}
-            />
-            <label> Pencader</label>
-          </div>
-          <div className="mb-1">
-            <input
-              id="russell"
-              type="checkbox"
-              name="chk"
-              onChange={() => toggleCheck("russell")}
-              checked={checked["russell"]}
-            />
-            <label> Russell</label>
-          </div>
-          <div className="mb-4">
-            <input
-              id="select_all"
-              type="checkbox"
-              name="chk"
-              onChange={(event) => selectAll(event.target.checked)}
-              checked={checkedAll}
-            />
-            <label> All of the above</label>
-          </div>
-          <label className="text-xl font-bold">Meetup time</label>
-          <div className="mt-1 mb-4">
-            <input
-              className="py-1 px-1 mr-4 rounded border-solid bg-gray-300"
-              type="time"
-              id="start_time"
-              name="time"
-              onChange={(event) => {
-                const newTime = { ...time };
-                newTime["start"] = event.target.value;
-                setTime(newTime);
-              }}
-            />
-            <input
-              className="py-1 px-1 rounded border-solid bg-gray-300"
-              type="time"
-              id="end_time"
-              name="time"
-              onChange={(event) => {
-                const newTime = { ...time };
-                newTime["end"] = event.target.value;
-                setTime(newTime);
-              }}
-            ></input>
-          </div>
-          <button
-            //   disabled={isDisabled}
-            className="text-sm bg-teal-600 text-white py-2 px-4 rounded disabled:opacity-25"
-            type="submit"
-          >
-            Submit
-          </button>
-        </form>
+      {!matched ? (
+        !isSubmitted ? (
+          <form onSubmit={submitForm} className="bg-white my-8 p-8 rounded-md">
+            <label className="text-xl font-bold">Choose a location</label>
+            <div className="mb-1">
+              <input
+                id="caesar_Rodney"
+                type="checkbox"
+                name="chk"
+                onChange={() => toggleCheck("caesar_rodney")}
+                checked={checked["caesar_rodney"]}
+              />
+              <label> Caesar Rodney</label>
+            </div>
+            <div className="mb-1">
+              <input
+                id="pencader"
+                type="checkbox"
+                name="chk"
+                onChange={() => toggleCheck("pencader")}
+                checked={checked["pencader"]}
+              />
+              <label> Pencader</label>
+            </div>
+            <div className="mb-1">
+              <input
+                id="russell"
+                type="checkbox"
+                name="chk"
+                onChange={() => toggleCheck("russell")}
+                checked={checked["russell"]}
+              />
+              <label> Russell</label>
+            </div>
+            <div className="mb-4">
+              <input
+                id="select_all"
+                type="checkbox"
+                name="chk"
+                onChange={(event) => selectAll(event.target.checked)}
+                checked={checkedAll}
+              />
+              <label> All of the above</label>
+            </div>
+            <label className="text-xl font-bold">Meetup time</label>
+            <div className="mt-1 mb-4">
+              <input
+                className="py-1 px-1 mr-4 rounded border-solid bg-gray-300"
+                type="time"
+                id="start_time"
+                name="time"
+                onChange={(event) => {
+                  const newTime = { ...time };
+                  newTime["start"] = event.target.value;
+                  setTime(newTime);
+                }}
+              />
+              <input
+                className="py-1 px-1 rounded border-solid bg-gray-300"
+                type="time"
+                id="end_time"
+                name="time"
+                onChange={(event) => {
+                  const newTime = { ...time };
+                  newTime["end"] = event.target.value;
+                  setTime(newTime);
+                }}
+              ></input>
+            </div>
+            <button
+              //   disabled={isDisabled}
+              className="text-sm bg-teal-600 text-white py-2 px-4 rounded disabled:opacity-25"
+              type="submit"
+            >
+              Submit
+            </button>
+          </form>
+        ) : (
+          <main>
+            Waiting for match...
+            <button
+              className="text-sm bg-teal-600 text-white py-2 px-4 rounded disabled:opacity-25"
+              onClick={() => setMatched(true)}
+            >
+              Artificially match
+            </button>
+          </main>
+        )
       ) : (
-        <main>
-          Waiting for match...
-          <button
-            className="text-sm bg-teal-600 text-white py-2 px-4 rounded disabled:opacity-25"
-            onClick={() => setMatched(true)}
-          >
-            Artificially match
-          </button>
-        </main>
+        <main>Chatbox goes here</main>
       )}
     </main>
   );
