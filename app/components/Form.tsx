@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
+import ChatBox from "./ChatBox";
 
 export default function Form({ give }: { give: boolean }) {
   const [isDisabled, setIsDisabled] = useState(false); // Use for buttons when form is empty
@@ -189,7 +190,7 @@ export default function Form({ give }: { give: boolean }) {
           </main>
         )
       ) : (
-        <main>Chatbox goes here</main>
+        <ChatBox />
       )}
     </main>
   );
