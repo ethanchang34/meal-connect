@@ -9,18 +9,18 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     const session = await getServerSession(req, res, authOptions);
-    //Check to see if user is logged in before making a post
+    // Check to see if user is logged in before making a post
     if (!session) {
       return res.status(401).json({ message: "Please sign in to make a post" });
     }
 
-    //Get User
+    // Get User
     const prismaUser = await prisma.user.findUnique({
       where: { email: session?.user?.email },
     });
 
     const title: string = req.body.title;
-    //Check title
+    // Check title
     if (title.length > 300) {
       return res.status(403).json({ message: "Please write a shorter post" });
     }
@@ -30,7 +30,7 @@ export default async function handler(
         .json({ message: "Please do not leave this empty" });
     }
 
-    //Create Post
+    // Create Post
     try {
       const result = await prisma.post.create({
         data: {

@@ -9,34 +9,32 @@ export default async function submitForm(
 ) {
   if (req.method === "POST") {
     const session = await getServerSession(req, res, authOptions);
-    //Check to see if user is logged in before sending form
+
+    // Check to see if user is logged in before sending form
     if (!session) {
       return res.status(401).json({ message: "Please sign in to submit form" });
     }
 
-    //Get User
+    // Get User
     const prismaUser = await prisma.user.findUnique({
       where: { email: session?.user?.email },
     });
 
+    // Retrieve data from request
+    const give = req.body.give;
     const locations = req.body.checked;
-    //Check title
-    // if (title.length > 300) {
-    //   return res.status(403).json({ message: "Please write a shorter post" });
-    // }
-    // if (!title.length) {
-    //   return res
-    //     .status(403)
-    //     .json({ message: "Please do not leave this empty" });
-    // }
+    const times = req.body.time;
 
-    //Submit Form
+    // Submit Form
     try {
       const result = await prisma.form.create({
         data: {
+          give: give["give"],
           caesar_rodney: locations["caesar_rodney"],
           pencader: locations["pencader"],
           russell: locations["russell"],
+          start: times["start"],
+          end: times["end"],
           userId: prismaUser.id,
         },
       });

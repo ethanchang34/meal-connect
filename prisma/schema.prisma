@@ -14,9 +14,12 @@ model Form {
   id  String  @id @default(cuid())
   userId String
   createdAt DateTime  @default(now())
+  give  Boolean // True = meal giver; False = meal requester
   caesar_rodney Boolean
   pencader  Boolean
   russell Boolean
+  start String
+  end  String
 }
 
 

@@ -3,8 +3,12 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import AddPost from "./components/AddPost";
 import Post from "./components/Post";
-import { Key } from "react";
+import { Key, useEffect, useState } from "react";
 import { PostType } from "./types/Posts";
+import { Socket, io } from "socket.io-client";
+import { DefaultEventsMap } from "@socket.io/component-emitter";
+// import { socket } from "./socket";
+let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 //Fetch all Posts
 const allPosts = async () => {
@@ -17,6 +21,32 @@ export default function Home() {
     queryFn: allPosts,
     queryKey: ["posts"],
   });
+  const [input, setInput] = useState("");
+
+  useEffect(() => {
+    socketInitializer();
+  }, []);
+
+  const socketInitializer = async () => {
+    await fetch("/api/socket");
+    socket = io();
+
+    socket.on("connect", () => {
+      console.log("connected");
+    });
+
+    socket.on("update-input", (msg) => {
+      setInput(msg);
+      console.log(msg);
+    });
+  };
+
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("onChangeHandler called");
+    setInput(e.target.value);
+    socket.emit("input-change", e.target.value);
+  };
+
   if (error) return error;
   if (isLoading) return "Loading...";
 
@@ -40,6 +70,11 @@ export default function Home() {
           />
         )
       )}
+      <input
+        placeholder="Type something"
+        value={input}
+        onChange={onChangeHandler}
+      />
     </main>
   );
 }
