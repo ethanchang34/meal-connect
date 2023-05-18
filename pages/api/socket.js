@@ -19,6 +19,14 @@ export default function SocketHandler(req, res) {
     });
   });
 
+  io.on("connection", (socket) => {
+    socket.on("newMessage", (msg) => {
+      console.log("in server:", msg);
+      socket.broadcast.emit("update-message", msg);
+      // socket.emit("update-mesage", msg);
+    });
+  });
+
   // io.on("connection", (socket) => {
   //   console.log(`User connected with socket ID ${socket.id}`);
   //   socket.on("formSubmit", async ({ location, time }) => {
